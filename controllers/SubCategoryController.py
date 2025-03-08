@@ -35,4 +35,4 @@ async def getSubCategoryByCategoryId(category_id:str):
             category["_id"] = str(category["_id"])
             subCat["category_id"] = category
 
-    return[SubCategoryOut(**subCat) for subcat in subcategories]
+    return[SubCategoryOut(**subCat) for subCat in subcategories]
