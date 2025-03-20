@@ -8,7 +8,7 @@ from email import encoders
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
 SMTP_EMAIL = "milankyada1997@gmail.com"
-SMTP_PASSWORD = "lntk teqk skvd daaf"
+SMTP_PASSWORD = "add your password here"
 
 def send_mail(to_email:str,subject:str,text:str):
     msg = MIMEMultipart()
