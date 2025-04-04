@@ -6,16 +6,15 @@ from routes.CityRoutes import router as city_router
 from routes.CategoryRoutes import router as category_router
 from routes.SubCategoryRoutes import router as sub_category_router
 from routes.ProductRoutes import router as product_router
-
+from routes.SellerRoutes import router as seller_router
 
 from fastapi.middleware.cors import CORSMiddleware
-
 
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:5173"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -28,3 +27,4 @@ app.include_router(city_router)
 app.include_router(category_router)
 app.include_router(sub_category_router)
 app.include_router(product_router)
+app.include_router(seller_router)

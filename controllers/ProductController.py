@@ -46,8 +46,7 @@ async def create_Product_withFile(
     seller_id: str = Form(...),
     image: UploadFile = File(...)
 ):
-    try:
-    
+    try:    
         # Ensure upload directory exists
         os.makedirs(UPLOAD_DIR, exist_ok=True)
 

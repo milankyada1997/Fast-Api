@@ -1,7 +1,7 @@
 from models.SubCategoryModel import SubCategory,SubCategoryOut
 from bson import ObjectId
 from config.database import sub_category_collection,category_collection
-from fastapi import APIRouter,HTTPException
+from fastapi import HTTPException
 from fastapi.responses import JSONResponse
 
 async def addSubCategory(sub_category:SubCategory):

@@ -1,10 +1,12 @@
-from models.UserModel import User,UserOut,UserLogin
+from models.UserModel import User,UserOut,UserLogin,ResetPasswordReq
 from bson import ObjectId
 from config.database import user_collection,role_collection
 from fastapi import HTTPException
 from fastapi.responses import JSONResponse
 import bcrypt
 from utils.SendMail import send_mail
+import datetime
+import jwt
 
 
 async def addUser(user:User):
@@ -63,3 +65,46 @@ async def loginUser(request: UserLogin):
         return{"message":"user login successfully..!","user":UserOut(**foundUser)}
     else:
         raise HTTPException(status_code=404,detail="Invalid password")
+    
+SECRET_KEY = "royal"
+def generate_token(email:str):
+    expiration = datetime.datetime.utcnow() + datetime.timedelta(hours=1)
+    payload = {"sub":email,"exp":expiration}
+    token = jwt.encode(payload,SECRET_KEY,algorithm="HS256")
+    return token
+
+async def forgotPassword(email:str):
+    foundUser = await user_collection.find_one({"email":email})
+    if not foundUser:
+        raise HTTPException(status_code=404,detail="email not found")
+    
+    token = generate_token(email)
+    resetLink = f"http://localhost:5173/resetpassword/{token}"
+    body = f"""
+    <html>
+        <h1> hello this is reset passsword link it is valid for 1 hour </h1>
+        <a href="{resetLink}">RESET PASSWORD</a>
+    </html>                     
+    """
+    subject = "Reset Password"
+    send_mail(email,subject,body)
+    return {"Message":"reset link sent successfully"}
+
+async def resetPassword(data:ResetPasswordReq):
+    try:
+        payload = jwt.decode(data.token,SECRET_KEY,algorithms="HS256")
+        email = payload.get("sub")
+        if not email:
+            raise HTTPException(status_code=421,detail="token is not valid")
+      
+        # hash the new password & decode for updated password
+      
+        hashed_password = bcrypt.hashpw(data.password.encode("utf-8"),bcrypt.gensalt()).decode("utf-8")
+        await user_collection.update_one({"email":email},{"$set":{"password":hashed_password}})
+
+        return {"message":"password reset successfully"}
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=500,detail="jwt is expired")
+    except jwt.InvalidTokenError:
+        raise HTTPException(status_code=500,detail="jwt is invalid")
+ 

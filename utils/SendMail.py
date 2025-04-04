@@ -8,14 +8,14 @@ from email import encoders
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
 SMTP_EMAIL = "milankyada1997@gmail.com"
-SMTP_PASSWORD = "add your password"
+SMTP_PASSWORD = "bkzp qkcr ulla ulgi"
 
 def send_mail(to_email:str,subject:str,text:str):
     msg = MIMEMultipart()
     msg['From'] = SMTP_EMAIL
     msg['To'] = to_email
     msg['Subject'] = subject
-    msg.attach(MIMEText(text,'plain'))
+    msg.attach(MIMEText(text,'html'))
 
     server = smtplib.SMTP(SMTP_SERVER,SMTP_PORT)
     server.starttls()

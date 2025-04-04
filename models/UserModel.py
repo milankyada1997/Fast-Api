@@ -40,3 +40,7 @@ class UserOut(User):
 class UserLogin(BaseModel):
     email:str
     password:str
+
+class ResetPasswordReq(BaseModel):
+    token:str
+    password:str
