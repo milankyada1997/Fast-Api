@@ -4,7 +4,7 @@ from cloudinary.uploader import upload
 cloudinary.config(
     cloud_name = "dd6pitmvp",
     api_key="763578662464567",
-    api_secret="add your api secret key"
+    api_secret="NxeBeM70nasEfqYs4PFMXO52RoI"
 )
 
 #util functionn...
