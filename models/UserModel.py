@@ -13,11 +13,14 @@ class User(BaseModel):
     email:str
     password:str
 
-    @validator("password",pre=True,always=True)
-    def encrypt_password(cls,v):
+    @validator("password", pre=True, always=True)
+    def encrypt_password(cls, v):
         if v is None:
             return None
-        return bcrypt.hashpw(v.encode("utf-8"),bcrypt.gensalt())
+        if isinstance(v, bytes):
+            return v  # Already hashed
+        return bcrypt.hashpw(v.encode("utf-8"), bcrypt.gensalt())
+
 
 class UserOut(User):
     id:str = Field(alias="_id")
@@ -35,8 +38,8 @@ class UserOut(User):
     def convert_role(cls,v):
         if isinstance(v, dict) and "_id" in v:
             v["_id"] = str(v["_id"])
-        return v
-    
+        return v  
+
 class UserLogin(BaseModel):
     email:str
     password:str
