@@ -25,3 +25,7 @@ async def create_product(name: str = Form(...),
 @router.get("/get_products")
 async def get_products():
     return await ProductController.get_products()
+
+@router.delete("/delete_product/{product_id}")
+async def delete_product(product_id: str):
+    return await ProductController.delete_product_by_id(product_id)

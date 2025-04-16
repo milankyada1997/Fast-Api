@@ -103,3 +103,13 @@ async def get_products():
     except Exception as e:
         print(f"An error occurred: {str(e)}")
         raise HTTPException(status_code=500, detail="An error occurred while fetching products")
+    
+async def delete_product_by_id(product_id: str):
+    try:
+        deleted = await product_collection.delete_one({"_id": ObjectId(product_id)})
+        if deleted.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Product not found")
+        return JSONResponse(content={"message": "Product deleted successfully"}, status_code=200)
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
+        raise HTTPException(status_code=500, detail="An error occurred while deleting product")
