@@ -7,7 +7,6 @@ from routes.CategoryRoutes import router as category_router
 from routes.SubCategoryRoutes import router as sub_category_router
 from routes.ProductRoutes import router as product_router
 from routes.SellerRoutes import router as seller_router
-from controllers.CartController import  cart_router
 
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -29,4 +28,3 @@ app.include_router(category_router)
 app.include_router(sub_category_router)
 app.include_router(product_router)
 app.include_router(seller_router)
-app.include_router(cart_router)
